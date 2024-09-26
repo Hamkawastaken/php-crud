@@ -1,9 +1,9 @@
 <?php 
 
 require 'function.php';
-$events = getData("SELECT * FROM events");  // Table 1 
-$participants = getData("SELECT * FROM participants");// Table 2
-$seminars = getData("SELECT * FROM seminars"); // Table 3
+$events = getTable("events");  // Table 1 
+$participants = getTable("participants");// Table 2
+$seminars = getTable("seminars"); // Table 3
 
 ?>
 

@@ -2,10 +2,10 @@
 
 require 'function.php';
 $id = $_GET['id'];
-$participant = showDataParticipant($id);
+$participant = showData($id, "participants");
 
 if ( isset($_POST["submit"])) {
-    if(updateDataParticipant($_POST, $id) > 0) {
+    if(updateData($_POST, $id, "participants") > 0) {
         echo "<script>alert('data berhasil di update');
         document.location.href = 'index.php';</script>";
     } else {

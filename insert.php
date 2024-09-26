@@ -3,7 +3,7 @@
 require 'function.php';
 
 if ( isset($_POST["submit"]) ) {
-    insertDataEvent($_POST);
+    insertData($_POST, "events");
     echo "<script>
     document.location.href = 'index.php';
     </script>";

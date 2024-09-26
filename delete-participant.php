@@ -4,7 +4,7 @@ require 'function.php';
 
 $id = $_GET["id"];
 
-if(deleteParticipant($id) > 0){
+if(deleteTable($id, "participants") > 0){
     echo "<script>
     alert('succesfullly deleted');
     document.location.href = 'index.php';

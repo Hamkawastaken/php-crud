@@ -12,8 +12,9 @@ if (!$conn) {
 }
 
 // Query Data
-function getData($query) {
+function getTable($table) {
     global $conn;
+    $query = "SELECT * FROM $table";
     $result = mysqli_query($conn, $query);
     $rows = [];
 
@@ -25,8 +26,11 @@ function getData($query) {
 }
 
 // Create
-function insertDataEvent($data) {
+function insertData($data, $table) {
     global $conn;
+
+    // Table 1
+    if ($table === "events") {
     $event_name = $data["event_name"];
     $date = $data["date"];
     $location = $data["location"];
@@ -35,21 +39,13 @@ function insertDataEvent($data) {
     $ticket_price = $data["ticket_price"];
 
     $query = "INSERT INTO events (event_name, date, location, duration, organizer, ticket_price) 
-          VALUES ('$event_name', '$date', '$location', '$duration', '$organizer', '$ticket_price')";
+        VALUES ('$event_name', '$date', '$location', '$duration', '$organizer', '$ticket_price')";
 
-
-mysqli_query($conn, $query);
-
-    if(mysqli_affected_rows($conn) > 0){
-        echo "<script>alert('data berhasil ditambahkan')</script>";
-    } else {
-        echo "<script>alert('data gagal ditambahkan')</script>";
-    };
-
-}
-
-function insertDataParticipant($data) {
-    global $conn;
+    mysqli_query($conn, $query);
+    }
+    
+    // Table 2
+    else if ($table === "participants") {
     $name = $data["name"];
     $event = $data["event"];
     $age = $data["age"];
@@ -57,43 +53,37 @@ function insertDataParticipant($data) {
     $job = $data["job"];
 
     $query = "INSERT INTO participants (name, event, age, address, job) 
-          VALUES ('$name', '$event', '$age', '$address', '$job')";
+        VALUES ('$name', '$event', '$age', '$address', '$job')";
 
-
-mysqli_query($conn, $query);
-
-    if(mysqli_affected_rows($conn) > 0){
-        echo "<script>alert('data berhasil ditambahkan')</script>";
-    } else {
-        echo "<script>alert('data gagal ditambahkan')</script>";
-    };
-
-}
-
-function insertDataSeminar($data) {
-    global $conn;
+    mysqli_query($conn, $query);
+    } 
+    
+    // Table 3
+    else if ($table === "seminars") {
     $name = $data["name"];
     $speaker = $data["speaker"];
     $date = $data["date"];
 
     $query = "INSERT INTO seminars (name, speaker, date) 
-          VALUES ('$name', '$speaker', '$date')";
+        VALUES ('$name', '$speaker', '$date')";
 
-
-mysqli_query($conn, $query);
+    mysqli_query($conn, $query);
+    }
+    
 
     if(mysqli_affected_rows($conn) > 0){
         echo "<script>alert('data berhasil ditambahkan')</script>";
     } else {
         echo "<script>alert('data gagal ditambahkan')</script>";
     };
-
 }
+
+
 
 // Read
-function showDataEvent($id){
+function showData($id, $table){
     global $conn;
-    $query = "SELECT * FROM events WHERE id = $id";
+    $query = "SELECT * FROM $table WHERE id = $id";
     $result = mysqli_query($conn, $query);
     $rows = [];
 
@@ -103,33 +93,13 @@ function showDataEvent($id){
     return $rows;
 }
 
-function showDataParticipant($id){
-    global $conn;
-    $query = "SELECT * FROM participants WHERE id = $id";
-    $result = mysqli_query($conn, $query);
-    $rows = [];
-
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rows[] = $row;
-    }
-    return $rows;
-}
-
-function showDataSeminar($id){
-    global $conn;
-    $query = "SELECT * FROM seminars WHERE id = $id";
-    $result = mysqli_query($conn, $query);
-    $rows = [];
-
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rows[] = $row;
-    }
-    return $rows;
-}
 
 // Update
-function updateDataEvent($data, $id){
+function updateData($data, $id, $table){
     global $conn;
+
+    // Table 1
+    if ($table === "events") {
     $event_name = $data["event_name"];
     $date = $data["date"];
     $location = $data["location"];
@@ -149,10 +119,10 @@ function updateDataEvent($data, $id){
     mysqli_query($conn, $query);
 
     return mysqli_affected_rows($conn);
-}
+    }
 
-function updateDataParticipant($data, $id) {
-    global $conn;
+    // Table 2
+    if ($table === "participants") {
     $name = $data["name"];
     $event = $data["event"];
     $age = $data["age"];
@@ -170,10 +140,10 @@ function updateDataParticipant($data, $id) {
     mysqli_query($conn, $query);
 
     return mysqli_affected_rows($conn);
-}
+    }
 
-function updateDataSeminar($data, $id){
-    global $conn;
+    // Table 3
+    if ($table === "seminars") {
     $name = $data["name"];
     $speaker = $data["speaker"];
     $date = $data["date"];
@@ -187,27 +157,13 @@ function updateDataSeminar($data, $id){
     mysqli_query($conn, $query);
 
     return mysqli_affected_rows($conn);
+    }
 }
 
 //Delete
-
-function deleteEvent($id){
+function deleteTable($id, $table){
     global $conn;
-    $query = "DELETE FROM events WHERE id = $id";
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
-}
-
-function deleteParticipant($id){
-    global $conn;
-    $query = "DELETE FROM participants WHERE id = $id";
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
-}
-
-function deleteSeminar($id){
-    global $conn;
-    $query = "DELETE FROM seminars WHERE id = $id";
+    $query = "DELETE FROM $table WHERE id = $id";
     mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
